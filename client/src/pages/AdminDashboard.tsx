@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import type { Complaint, ComplaintStatus } from '../types'
-import { getComplaints, getComplaintById, sendAdminResponse, updateComplaintStatus } from '../services/complaints.service'
+import { getComplaints, getComplaintById, sendAdminResponse, updateComplaintStatus, exportComplaintsCSV } from '../services/complaints.service'
 import CategoryTag from '../components/ui/CategoryTag'
 import StatusDot from '../components/ui/StatusDot'
 import Badge from '../components/ui/Badge'
@@ -25,6 +25,7 @@ export default function AdminDashboard() {
   const [responseStatus, setResponseStatus] = useState<ComplaintStatus>('open')
   const [sending, setSending] = useState(false)
   const [sendError, setSendError] = useState('')
+  const [exporting, setExporting] = useState(false)
 
   const fetchComplaints = useCallback(async () => {
     setLoading(true)
@@ -87,6 +88,15 @@ export default function AdminDashboard() {
     fetchComplaints()
   }
 
+  const handleExport = async () => {
+    setExporting(true)
+    try {
+      await exportComplaintsCSV()
+    } finally {
+      setExporting(false)
+    }
+  }
+
   const stats = {
     total: complaints.length,
     open: complaints.filter(c => c.status === 'open').length,
@@ -95,55 +105,65 @@ export default function AdminDashboard() {
   }
 
   return (
-    <main className="max-w-5xl mx-auto px-6 py-10">
+    <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
       <p className="text-xs font-semibold tracking-widest uppercase text-red-500 mb-2">Admin Dashboard</p>
-      <h1 className="font-serif text-4xl text-stone-900 mb-1">Complaints Inbox</h1>
-      <p className="text-stone-500 mb-8">Review, respond, and resolve submitted complaints.</p>
+      <h1 className="font-serif text-3xl sm:text-4xl text-stone-900 mb-1">Complaints Inbox</h1>
+      <p className="text-stone-500 mb-6 sm:mb-8">Review, respond, and resolve submitted complaints.</p>
 
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
         {[
           { label: 'Total', value: stats.total },
           { label: 'Open', value: stats.open },
           { label: 'Pending', value: stats.pending },
           { label: 'Resolved', value: stats.resolved },
         ].map(s => (
-          <div key={s.label} className="bg-white border border-stone-200 rounded-xl p-5 shadow-sm">
-            <div className="font-serif text-3xl text-stone-900">{s.value}</div>
+          <div key={s.label} className="bg-white border border-stone-200 rounded-xl p-4 sm:p-5 shadow-sm">
+            <div className="font-serif text-2xl sm:text-3xl text-stone-900">{s.value}</div>
             <div className="text-xs text-stone-400 font-medium mt-1">{s.label}</div>
           </div>
         ))}
       </div>
 
-      <div className="flex gap-3 mb-5 flex-wrap">
+      <div className="flex flex-col sm:flex-row gap-3 mb-5">
         <input
           type="text"
           placeholder="Search by name, subject or ticket..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="flex-1 min-w-48 bg-white border border-stone-200 rounded-lg px-4 py-2 text-sm text-stone-900 outline-none focus:border-blue-500 transition-all"
+          className="flex-1 bg-white border border-stone-200 rounded-lg px-4 py-2 text-sm text-stone-900 outline-none focus:border-blue-500 transition-all"
         />
-        <select
-          value={filterCategory}
-          onChange={e => setFilterCategory(e.target.value)}
-          className="bg-white border border-stone-200 rounded-lg px-4 py-2 text-sm text-stone-700 outline-none cursor-pointer"
-        >
-          <option value="">All Categories</option>
-          <option value="billing">Billing</option>
-          <option value="technical">Technical</option>
-          <option value="service">Service</option>
-          <option value="delivery">Delivery</option>
-          <option value="other">Other</option>
-        </select>
-        <select
-          value={filterStatus}
-          onChange={e => setFilterStatus(e.target.value)}
-          className="bg-white border border-stone-200 rounded-lg px-4 py-2 text-sm text-stone-700 outline-none cursor-pointer"
-        >
-          <option value="">All Statuses</option>
-          <option value="open">Open</option>
-          <option value="pending">Pending</option>
-          <option value="resolved">Resolved</option>
-        </select>
+        <div className="flex gap-3">
+          <select
+            value={filterCategory}
+            onChange={e => setFilterCategory(e.target.value)}
+            className="flex-1 sm:flex-none bg-white border border-stone-200 rounded-lg px-3 py-2 text-sm text-stone-700 outline-none cursor-pointer"
+          >
+            <option value="">All Categories</option>
+            <option value="billing">Billing</option>
+            <option value="technical">Technical</option>
+            <option value="service">Service</option>
+            <option value="delivery">Delivery</option>
+            <option value="other">Other</option>
+          </select>
+          <select
+            value={filterStatus}
+            onChange={e => setFilterStatus(e.target.value)}
+            className="flex-1 sm:flex-none bg-white border border-stone-200 rounded-lg px-3 py-2 text-sm text-stone-700 outline-none cursor-pointer"
+          >
+            <option value="">All Statuses</option>
+            <option value="open">Open</option>
+            <option value="pending">Pending</option>
+            <option value="resolved">Resolved</option>
+          </select>
+          <button
+            onClick={handleExport}
+            disabled={exporting}
+            className="flex items-center gap-2 px-4 py-2 bg-stone-900 hover:bg-stone-800 text-white rounded-lg text-sm font-semibold transition-all disabled:opacity-60 whitespace-nowrap"
+          >
+            {exporting ? <Spinner size="sm" /> : '↓'}
+            <span className="hidden sm:inline">{exporting ? 'Exporting...' : 'Export CSV'}</span>
+          </button>
+        </div>
       </div>
 
       <div className="bg-white border border-stone-200 rounded-2xl shadow-sm overflow-hidden">
@@ -157,57 +177,84 @@ export default function AdminDashboard() {
             <p>No complaints match your filters.</p>
           </div>
         ) : (
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-stone-200">
-                {['Ticket', 'Name', 'Subject', 'Category', 'Priority', 'Status', 'Date'].map(h => (
-                  <th key={h} className="text-left text-xs font-semibold uppercase tracking-wider text-stone-400 px-4 py-3">
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
+          <>
+            <div className="hidden md:block">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-stone-200">
+                    {['Ticket', 'Name', 'Subject', 'Category', 'Priority', 'Status', 'Date'].map(h => (
+                      <th key={h} className="text-left text-xs font-semibold uppercase tracking-wider text-stone-400 px-4 py-3">
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {complaints.map(c => (
+                    <tr
+                      key={c.id}
+                      onClick={() => openModal(c)}
+                      className="border-b border-stone-100 hover:bg-stone-50 cursor-pointer transition-colors"
+                    >
+                      <td className="px-4 py-3 text-sm font-medium text-stone-700">{c.ticket_id}</td>
+                      <td className="px-4 py-3 text-sm text-stone-700">{c.name}</td>
+                      <td className="px-4 py-3 text-sm text-stone-500 max-w-48 truncate">{c.subject}</td>
+                      <td className="px-4 py-3"><CategoryTag category={c.category} /></td>
+                      <td className="px-4 py-3"><Badge variant={c.priority} /></td>
+                      <td className="px-4 py-3"><StatusDot status={c.status} /></td>
+                      <td className="px-4 py-3 text-xs text-stone-400">{formatDate(c.created_at)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="md:hidden divide-y divide-stone-100">
               {complaints.map(c => (
-                <tr
+                <div
                   key={c.id}
                   onClick={() => openModal(c)}
-                  className="border-b border-stone-100 hover:bg-stone-50 cursor-pointer transition-colors"
+                  className="px-4 py-4 hover:bg-stone-50 cursor-pointer transition-colors"
                 >
-                  <td className="px-4 py-3 text-sm font-medium text-stone-700">{c.ticket_id}</td>
-                  <td className="px-4 py-3 text-sm text-stone-700">{c.name}</td>
-                  <td className="px-4 py-3 text-sm text-stone-500 max-w-48 truncate">{c.subject}</td>
-                  <td className="px-4 py-3"><CategoryTag category={c.category} /></td>
-                  <td className="px-4 py-3"><Badge variant={c.priority} /></td>
-                  <td className="px-4 py-3"><StatusDot status={c.status} /></td>
-                  <td className="px-4 py-3 text-xs text-stone-400">{formatDate(c.created_at)}</td>
-                </tr>
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    <div className="min-w-0">
+                      <p className="text-xs font-mono font-semibold text-red-500">{c.ticket_id}</p>
+                      <p className="text-sm font-medium text-stone-800 mt-0.5 truncate">{c.subject}</p>
+                      <p className="text-xs text-stone-400 mt-0.5">{c.name} &middot; {formatDate(c.created_at)}</p>
+                    </div>
+                    <StatusDot status={c.status} />
+                  </div>
+                  <div className="flex gap-2 flex-wrap">
+                    <CategoryTag category={c.category} />
+                    <Badge variant={c.priority} />
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </>
         )}
       </div>
 
       {selected && (
         <div
-          className="fixed inset-0 bg-stone-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-5"
+          className="fixed inset-0 bg-stone-900/50 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center sm:p-5"
           onClick={e => { if (e.target === e.currentTarget) closeModal() }}
         >
-          <div className="bg-white rounded-2xl border border-stone-200 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div className="flex justify-between items-start p-7 pb-0">
+          <div className="bg-white rounded-t-2xl sm:rounded-2xl border border-stone-200 w-full sm:max-w-2xl max-h-[92vh] overflow-y-auto shadow-2xl">
+            <div className="flex justify-between items-start p-5 sm:p-7 pb-0">
               <div>
                 <p className="text-xs font-semibold tracking-widest uppercase text-red-500 mb-1">{selected.ticket_id}</p>
-                <h2 className="font-serif text-xl text-stone-900">{selected.subject}</h2>
+                <h2 className="font-serif text-lg sm:text-xl text-stone-900">{selected.subject}</h2>
               </div>
               <button
                 onClick={closeModal}
-                className="w-8 h-8 flex items-center justify-center rounded-lg border border-stone-200 hover:bg-stone-100 text-stone-500 transition-all"
+                className="w-8 h-8 flex items-center justify-center rounded-lg border border-stone-200 hover:bg-stone-100 text-stone-500 transition-all flex-shrink-0"
               >
                 ✕
               </button>
             </div>
 
-            <div className="p-7">
+            <div className="p-5 sm:p-7">
               {modalLoading ? (
                 <div className="flex justify-center py-8"><Spinner /></div>
               ) : (
@@ -222,7 +269,7 @@ export default function AdminDashboard() {
                     <p className="text-xs font-semibold uppercase tracking-widest text-stone-400 mb-1">Complainant</p>
                     <p className="text-sm text-stone-700">
                       {selected.name} &middot;{' '}
-                      <a href={`mailto:${selected.email}`} className="text-blue-600 hover:underline">
+                      <a href={`mailto:${selected.email}`} className="text-blue-600 hover:underline break-all">
                         {selected.email}
                       </a>
                     </p>
@@ -242,11 +289,13 @@ export default function AdminDashboard() {
                           className={`rounded-xl p-4 mb-2 text-sm leading-relaxed ${
                             r.type === 'auto'
                               ? 'bg-blue-50 border border-blue-100 text-blue-800'
+                              : r.type === 'user'
+                              ? 'bg-stone-50 border border-stone-200 text-stone-700'
                               : 'bg-green-50 border border-green-100 text-green-800'
                           }`}
                         >
                           <span className="text-xs font-semibold uppercase tracking-widest opacity-60 block mb-1">
-                            {r.type === 'auto' ? 'Auto Response' : 'Admin Response'}
+                            {r.type === 'auto' ? 'Auto Response' : r.type === 'user' ? 'User Follow-up' : 'Admin Response'}
                           </span>
                           {r.content}
                         </div>
@@ -258,7 +307,7 @@ export default function AdminDashboard() {
 
                   <p className="text-sm font-semibold text-stone-700 mb-3">Send Response</p>
 
-                  <div className="flex gap-2 mb-3">
+                  <div className="flex flex-col sm:flex-row gap-2 mb-3">
                     <select
                       onChange={e => setResponseText(e.target.value)}
                       defaultValue=""
@@ -294,7 +343,7 @@ export default function AdminDashboard() {
                     </div>
                   )}
 
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <button
                       onClick={() => handleSend(true)}
                       disabled={sending}
@@ -312,7 +361,7 @@ export default function AdminDashboard() {
                     </button>
                     <button
                       onClick={() => handleStatusChange(selected.id, responseStatus)}
-                      className="ml-auto px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-600 rounded-lg text-sm font-semibold transition-all"
+                      className="sm:ml-auto px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-600 rounded-lg text-sm font-semibold transition-all"
                     >
                       Update Status Only
                     </button>

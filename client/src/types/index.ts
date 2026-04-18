@@ -23,7 +23,7 @@ export interface ComplaintResponse {
   id: string
   complaint_id: string
   content: string
-  type: 'auto' | 'admin'
+  type: 'auto' | 'admin' | 'user'
   admin_id: string | null
   created_at: string
 }
@@ -50,4 +50,17 @@ export interface AdminLoginPayload {
 export interface AdminLoginResponse {
   token: string
   username: string
+}
+
+export interface AnalyticsData {
+  byCategory: { category: string; count: number }[]
+  byStatus: { status: string; count: number }[]
+  byPriority: { priority: string; count: number }[]
+  overTime: { date: string; count: number }[]
+  totals: {
+    total: number
+    resolved: number
+    open: number
+    pending: number
+  }
 }
