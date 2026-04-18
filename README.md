@@ -185,14 +185,18 @@ ComplaitIQ/
 │       ├── services/         # API layer (axios)
 │       ├── types/            # Shared TypeScript interfaces
 │       └── utils/            # Helpers and formatters
-└── server/
-    └── src/
-        ├── config/           # Database connection
-        ├── controllers/      # Request handlers
-        ├── middleware/        # Auth, validation, error handling
-        ├── routes/           # Express route definitions
-        ├── services/         # Auto-response and email logic
-        └── types/            # Shared TypeScript types
+├── server/
+│   └── src/
+│       ├── config/           # Database connection
+│       ├── controllers/      # Request handlers
+│       ├── middleware/        # Auth, validation, error handling
+│       ├── routes/           # Express route definitions
+│       ├── services/         # Auto-response and email logic
+│       └── types/            # Shared TypeScript types
+├── screenshots/              # README preview images
+├── schema.sql                # Database schema
+├── LICENSE
+└── README.md
 ```
 
 ---
