@@ -1,4 +1,3 @@
-```markdown
 # ComplaitIQ
 
 ![React](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
