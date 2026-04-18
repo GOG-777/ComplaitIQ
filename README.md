@@ -71,6 +71,17 @@ This is not a demo - it is built to the same standard as a real shipped product.
 - pnpm
 - PostgreSQL 18
 
+### Windows Users
+
+The setup steps in this README are written for Linux. If you are on Windows;
+
+- Install PostgreSQL from [postgresql.org/download/windows](https://www.postgresql.org/download/windows/) and use **pgAdmin** or the included SQL Shell (psql) to run the database setup commands
+- Install Node.js from [nodejs.org](https://nodejs.org)
+- Install pnpm via `npm install -g pnpm`
+- Use **PowerShell** or **Git Bash** for all terminal commands
+- The `psql` command must be added to your system PATH during PostgreSQL installation, make sure that checkbox is ticked
+- Everything else (pnpm install, pnpm dev, etc.) works exactly the same
+
 ### 1. Clone the repository
 
 ```bash
