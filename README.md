@@ -12,6 +12,7 @@
 ![Nodemailer](https://img.shields.io/badge/Nodemailer-22B573?style=for-the-badge&logo=gmail&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Production_Ready-brightgreen?style=for-the-badge)
+![Arch Linux](https://img.shields.io/badge/Built_on-Arch_Linux-1793D1?style=for-the-badge&logo=archlinux&logoColor=white)
 
 
 A structured, full-stack complaint management platform built for transparency, accountability, and fast resolutions. Designed and built as a group project for CSC - University of Port Harcourt.
