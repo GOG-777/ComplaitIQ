@@ -7,6 +7,7 @@ import AdminLogin from './pages/AdminLogin'
 import AdminDashboard from './pages/AdminDashboard'
 import AnalyticsPage from './pages/AnalyticsPage'
 import { isAuthenticated } from './services/auth.service'
+import AdminSettings from './pages/AdminSettings'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   return isAuthenticated() ? <>{children}</> : <Navigate to="/admin/login" replace />
@@ -39,6 +40,15 @@ export default function App() {
               }
             />
             <Route path="*" element={<Navigate to="/" replace />} />
+            <Route
+              path="/admin/settings"
+              element={
+                <ProtectedRoute>
+                  <AdminSettings />
+                </ProtectedRoute>
+              }
+            />
+
           </Routes>
         </div>
         <Footer />

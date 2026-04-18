@@ -1,83 +1,176 @@
+import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { logout, isAuthenticated } from '../services/auth.service'
+import { Menu, X, ShieldCheck } from 'lucide-react'
 
 export default function Header() {
     const navigate = useNavigate()
     const location = useLocation()
     const authed = isAuthenticated()
     const isAdmin = location.pathname.startsWith('/admin')
+    const [menuOpen, setMenuOpen] = useState(false)
+
+    useEffect(() => {
+        setMenuOpen(false)
+    }, [location.pathname])
+
+    useEffect(() => {
+        document.body.style.overflow = menuOpen ? 'hidden' : ''
+        return () => { document.body.style.overflow = '' }
+    }, [menuOpen])
 
     const handleLogout = () => {
         logout()
         navigate('/admin/login')
+        setMenuOpen(false)
     }
 
-    return (
-        <header className="bg-stone-900 text-white h-16 px-6 flex items-center justify-between sticky top-0 z-50">
-            <button
-                onClick={() => navigate('/')}
-                className="flex items-center gap-2 h-12"
-            >
-                <img
-                    src="/favicon.svg"
-                    alt=""
-                    className="h-full w-auto py-1"
-                />
-                <span className="font-serif text-xl tracking-tight">
-                    Compli<span className="text-red-500">IQ</span>
-                </span>
-            </button>
+    const navTo = (path: string) => {
+        navigate(path)
+        setMenuOpen(false)
+    }
 
-            <nav className="flex items-center gap-1">
+    const isActive = (path: string) => location.pathname === path
+
+    const linkClass = (path: string) =>
+        `px-4 py-2 rounded-lg text-sm font-medium transition-all ${isActive(path)
+            ? 'bg-white/15 text-white'
+            : 'text-white/55 hover:text-white hover:bg-white/8'
+        }`
+
+    return (
+        <>
+            <header className="bg-stone-900 text-white h-16 px-6 flex items-center justify-between sticky top-0 z-50">
                 <button
                     onClick={() => navigate('/')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${location.pathname === '/'
-                        ? 'bg-white/15 text-white'
-                        : 'text-white/55 hover:text-white hover:bg-white/8'
-                        }`}
+                    className="flex items-center gap-2 h-12"
                 >
-                    Submit
+                    <img
+                        src="/favicon.svg"
+                        alt=""
+                        className="h-full w-auto py-1"
+                    />
+                    <span className="font-serif text-xl tracking-tight">
+                        Compli<span className="text-red-500">IQ</span>
+                    </span>
                 </button>
+
+                <nav className="hidden md:flex items-center gap-1">
+                    <button onClick={() => navTo('/')} className={linkClass('/')}>Submit</button>
+                    <button onClick={() => navTo('/track')} className={linkClass('/track')}>Track</button>
+                    {authed && isAdmin && (
+                        <>
+                            <button onClick={() => navTo('/admin')} className={linkClass('/admin')}>Dashboard</button>
+                            <button onClick={() => navTo('/admin/analytics')} className={linkClass('/admin/analytics')}>Analytics</button>
+                            <button
+                                onClick={() => navTo('/admin/settings')}
+                                className={linkClass('/admin/settings')}
+                            >
+                                Settings
+                            </button>
+                            <button
+                                onClick={handleLogout}
+                                className="px-4 py-2 rounded-lg text-sm font-medium text-white/55 hover:text-white hover:bg-white/8 transition-all"
+                            >
+                                Sign out
+                            </button>
+                        </>
+                    )}
+                </nav>
 
                 <button
-                    onClick={() => navigate('/track')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${location.pathname === '/track'
-                        ? 'bg-white/15 text-white'
-                        : 'text-white/55 hover:text-white hover:bg-white/8'
-                        }`}
+                    onClick={() => setMenuOpen(prev => !prev)}
+                    className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg bg-white/8 hover:bg-white/15 transition-all"
+                    aria-label="Toggle menu"
                 >
-                    Track
+                    {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                 </button>
+            </header>
 
-                {authed && isAdmin && (
-                    <>
+            {menuOpen && (
+                <div
+                    className="fixed inset-0 z-40 bg-stone-900/60 backdrop-blur-sm md:hidden"
+                    onClick={() => setMenuOpen(false)}
+                />
+            )}
+
+            <div className={`
+        fixed top-16 right-0 bottom-0 z-40 w-72 bg-stone-900 border-l border-stone-800
+        transform transition-transform duration-300 ease-in-out md:hidden
+        ${menuOpen ? 'translate-x-0' : 'translate-x-full'}
+      `}>
+                <div className="flex flex-col h-full p-4">
+                    <div className="space-y-1 flex-1">
+                        <p className="text-xs font-semibold uppercase tracking-widest text-stone-500 px-3 py-2">Navigation</p>
+
                         <button
-                            onClick={() => navigate('/admin')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${location.pathname === '/admin'
-                                ? 'bg-white/15 text-white'
-                                : 'text-white/55 hover:text-white hover:bg-white/8'
+                            onClick={() => navTo('/')}
+                            className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all ${isActive('/') ? 'bg-white/15 text-white' : 'text-white/70 hover:text-white hover:bg-white/8'
                                 }`}
                         >
-                            Dashboard
+                            Submit a Complaint
                         </button>
+
                         <button
-                            onClick={() => navigate('/admin/analytics')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${location.pathname === '/admin/analytics'
-                                ? 'bg-white/15 text-white'
-                                : 'text-white/55 hover:text-white hover:bg-white/8'
+                            onClick={() => navTo('/track')}
+                            className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all ${isActive('/track') ? 'bg-white/15 text-white' : 'text-white/70 hover:text-white hover:bg-white/8'
                                 }`}
                         >
-                            Analytics
+                            Track Complaint
                         </button>
-                        <button
-                            onClick={handleLogout}
-                            className="px-4 py-2 rounded-lg text-sm font-medium text-white/55 hover:text-white hover:bg-white/8 transition-all"
-                        >
-                            Sign out
-                        </button>
-                    </>
-                )}
-            </nav>
-        </header>
+
+                        {authed && isAdmin && (
+                            <>
+                                <div className="pt-3">
+                                    <p className="text-xs font-semibold uppercase tracking-widest text-stone-500 px-3 py-2">Admin</p>
+                                </div>
+
+                                <button
+                                    onClick={() => navTo('/admin')}
+                                    className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all ${isActive('/admin') ? 'bg-white/15 text-white' : 'text-white/70 hover:text-white hover:bg-white/8'
+                                        }`}
+                                >
+                                    Dashboard
+                                </button>
+
+                                <button
+                                    onClick={() => navTo('/admin/analytics')}
+                                    className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all ${isActive('/admin/analytics') ? 'bg-white/15 text-white' : 'text-white/70 hover:text-white hover:bg-white/8'
+                                        }`}
+                                >
+                                    Analytics
+                                </button>
+                                <button
+                                    onClick={() => navTo('/admin/settings')}
+                                    className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all ${isActive('/admin/settings') ? 'bg-white/15 text-white' : 'text-white/70 hover:text-white hover:bg-white/8'
+                                        }`}
+                                >
+                                    Settings
+                                </button>
+                            </>
+                        )}
+                    </div>
+
+                    <div className="border-t border-stone-800 pt-4 space-y-2">
+                        {authed && isAdmin ? (
+                            <button
+                                onClick={handleLogout}
+                                className="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-red-400 hover:text-red-300 hover:bg-white/5 transition-all"
+                            >
+                                Sign out
+                            </button>
+                        ) : (
+                            <button
+                                onClick={() => navTo('/admin/login')}
+                                className="w-full flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium text-stone-500 hover:text-stone-300 hover:bg-white/5 transition-all"
+                            >
+                                <ShieldCheck className="w-4 h-4" />
+                                Admin Access
+                            </button>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </>
     )
 }
