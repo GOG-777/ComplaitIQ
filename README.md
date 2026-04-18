@@ -73,7 +73,7 @@ This is not a demo - it is built to the same standard as a real shipped product.
 | Landing & Submit | ![Submit](./screenshots/landing.png) |
 | Admin Dashboard | ![Dashboard](./screenshots/dashboard.png) |
 | Analytics | ![Analytics](./screenshots/analytics.png) |
-| Ticket Tracker | ![Track](./screenshots/track.png?v=fix) |
+| Ticket Tracker | ![Track](./screenshots/ticket-tracker.png') |
 
 ---
 
