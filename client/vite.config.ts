@@ -8,6 +8,13 @@ export default defineConfig({
     tailwindcss(),
   ],
   server: {
-    allowedHosts: ['.app.github.dev']
+    allowedHosts: ['.app.github.dev'],
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false
+      }
+    }
   }
 })
