@@ -115,7 +115,7 @@ export default function AnalyticsPage() {
                 outerRadius={80}
                 innerRadius={40}
                 paddingAngle={3}
-                label={({ name, percent }) => `${name} ${Math.round(percent * 100)}%`}
+                label={({ name, percent }: { name: string, percent: number }) => `${name} ${Math.round(percent * 100)}%`}
                 labelLine={false}
               >
                 {data?.byStatus.map(entry => (
@@ -166,7 +166,7 @@ export default function AnalyticsPage() {
                 cy="50%"
                 outerRadius={80}
                 paddingAngle={3}
-                label={({ name, percent }) => `${name} ${Math.round(percent * 100)}%`}
+                label={({ name, percent }: { name: string, percent: number }) => `${name} ${Math.round(percent * 100)}%`}
                 labelLine={false}
               >
                 {data?.byPriority.map(entry => (
