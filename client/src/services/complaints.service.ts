@@ -51,7 +51,7 @@ export const getAnalytics = async (): Promise<AnalyticsData> => {
 
 export const exportComplaintsCSV = async (): Promise<void> => {
   const token = localStorage.getItem('token')
-  const res = await fetch('http://localhost:5000/api/complaints/export/csv', {
+  const res = await fetch(`${import.meta.env.VITE_API_URL ?? 'http://localhost:5000/api'}/complaints/export/csv`, {
     headers: { Authorization: `Bearer ${token}` },
   })
   if (!res.ok) throw new Error('Export failed')
