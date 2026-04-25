@@ -51,7 +51,7 @@ export default function Header() {
                         className="h-full w-auto py-1"
                     />
                     <span className="font-serif text-2xl tracking-tighter">
-                        Compli<span className="text-red-500">IQ</span>
+                        Complait<span className="text-red-500">IQ</span>
                     </span>
                 </button>
 
