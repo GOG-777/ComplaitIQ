@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import api from '../services/api'
-import Spinner from '../components/ui/Spinner'
+
 import { ShieldCheck, ArrowLeft } from 'lucide-react'
 
 export default function AdminSettings() {
@@ -11,7 +10,7 @@ export default function AdminSettings() {
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [loading, setLoading] = useState(false)
+
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
@@ -106,11 +105,9 @@ export default function AdminSettings() {
         <div className="mt-6 pt-6 border-t border-stone-100">
           <button
             onClick={handleChange}
-            disabled={loading}
-            className="flex items-center gap-2 px-6 py-2.5 bg-stone-900 hover:bg-stone-800 text-white rounded-lg text-sm font-semibold transition-all disabled:opacity-60"
+            className="flex items-center gap-2 px-6 py-2.5 bg-stone-900 hover:bg-stone-800 text-white rounded-lg text-sm font-semibold transition-all"
           >
-            {loading && <Spinner size="sm" />}
-            {loading ? 'Updating...' : 'Update Password'}
+            Update Password
           </button>
         </div>
       </div>
