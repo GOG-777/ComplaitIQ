@@ -16,37 +16,9 @@ export default function AdminSettings() {
   const [success, setSuccess] = useState('')
 
   const handleChange = async () => {
-    setError('')
+    setError('Password changing has been disabled by the developer as this is a public demo project.')
     setSuccess('')
-
-    if (!currentPassword || !newPassword || !confirmPassword) {
-      setError('All fields are required.')
-      return
-    }
-
-    if (newPassword !== confirmPassword) {
-      setError('New passwords do not match.')
-      return
-    }
-
-    if (newPassword.length < 8) {
-      setError('New password must be at least 8 characters.')
-      return
-    }
-
-    setLoading(true)
-    try {
-      const res = await api.post('/auth/change-password', { currentPassword, newPassword })
-      setSuccess(res.data.message)
-      setCurrentPassword('')
-      setNewPassword('')
-      setConfirmPassword('')
-    } catch (err: unknown) {
-      const msg = (err as { response?: { data?: { message?: string } } })?.response?.data?.message
-      setError(msg ?? 'Something went wrong. Please try again.')
-    } finally {
-      setLoading(false)
-    }
+    return
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
