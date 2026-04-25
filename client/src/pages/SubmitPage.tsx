@@ -223,45 +223,64 @@ export default function SubmitPage() {
 
   return (
     <div>
-      <section className="bg-stone-900 text-white py-14 sm:py-20 px-6">
-        <div className="max-w-5xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-2 mb-5 flex-wrap">
-            {trustBadges.map(badge => (
-              <span
-                key={badge.label}
-                className="inline-flex items-center gap-1.5 bg-white/8 border border-white/10 rounded-full px-3 py-1 text-xs font-medium text-stone-300"
-              >
-                <badge.icon className="w-3 h-3 text-red-400" />
-                {badge.label}
-              </span>
-            ))}
+      <section className="bg-stone-900 text-white pt-16 pb-20 sm:pt-24 sm:pb-32 px-6 relative overflow-hidden">
+        {/* Abstract Background Elements */}
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-red-500/10 to-transparent pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-red-500/5 blur-3xl rounded-full pointer-events-none" />
+        
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+          <div>
+            <div className="flex items-center gap-2 mb-8 flex-wrap">
+              {trustBadges.map(badge => (
+                <span
+                  key={badge.label}
+                  className="inline-flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-stone-300"
+                >
+                  <badge.icon className="w-3.5 h-3.5 text-red-500" />
+                  {badge.label}
+                </span>
+              ))}
+            </div>
+            <h1 className="font-serif text-5xl sm:text-7xl mb-6 leading-[1.1] tracking-tight">
+              We take your complaints <span className="text-red-500">seriously.</span>
+            </h1>
+            <p className="text-stone-400 text-lg sm:text-xl max-w-lg leading-relaxed">
+              Submit your issue in minutes. Our team reviews every complaint and responds promptly with a clear resolution.
+            </p>
           </div>
-          <h1 className="font-serif text-4xl sm:text-5xl mb-4 leading-tight">
-            We take your complaints <span className="text-red-400">seriously.</span>
-          </h1>
-          <p className="text-stone-400 text-base sm:text-lg max-w-xl mx-auto">
-            Submit your issue in minutes. Our team reviews every complaint and responds promptly with a clear resolution.
-          </p>
+          
+          <div className="hidden lg:block relative h-[500px]">
+            <div className="absolute inset-0 bg-red-500/10 blur-3xl rounded-full scale-75 animate-pulse" />
+            <div 
+              className="relative z-10 w-full h-full bg-contain bg-center bg-no-repeat pointer-events-none select-none"
+              style={{ 
+                backgroundImage: 'url("/3d_shield_hero.png")',
+                maskImage: 'radial-gradient(circle, black 40%, transparent 80%)',
+                WebkitMaskImage: 'radial-gradient(circle, black 40%, transparent 80%)'
+              }}
+              role="presentation"
+            />
+          </div>
         </div>
       </section>
 
-      <section className="border-b border-stone-200 bg-white">
-        <div className="max-w-5xl mx-auto px-6 py-10 sm:py-12">
-          <p className="text-xs font-semibold tracking-widest uppercase text-stone-400 text-center mb-8">How it works</p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-10">
+      <section className="bg-stone-50 border-y border-stone-200">
+        <div className="max-w-6xl mx-auto px-6 py-12 sm:py-16">
+          <p className="text-xs font-bold tracking-[0.2em] uppercase text-stone-400 text-center mb-12">How it works</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 lg:gap-16">
             {howItWorks.map((item, idx) => (
-              <div key={item.title} className="flex sm:flex-col items-start sm:items-center gap-4 sm:gap-0 sm:text-center">
-                <div className="relative flex-shrink-0">
-                  <div className="w-12 h-12 bg-stone-100 rounded-2xl flex items-center justify-center">
-                    <item.icon className="w-5 h-5 text-stone-700" />
+              <div key={item.title} className="flex flex-col items-center text-center group">
+                <div className="relative mb-6">
+                  <div className="w-20 h-20 bg-white border border-stone-200 rounded-[2rem] flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+                    <item.icon className="w-8 h-8 text-stone-800" />
                   </div>
-                  <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 w-8 h-8 bg-red-600 text-white text-sm font-bold rounded-full flex items-center justify-center border-4 border-stone-50 shadow-sm">
                     {idx + 1}
                   </span>
                 </div>
-                <div className="sm:mt-4">
-                  <p className="font-semibold text-stone-800 text-sm mb-1">{item.title}</p>
-                  <p className="text-stone-500 text-xs leading-relaxed">{item.description}</p>
+                <div>
+                  <p className="font-serif text-xl text-stone-900 mb-2">{item.title}</p>
+                  <p className="text-stone-500 text-sm leading-relaxed max-w-[200px]">{item.description}</p>
                 </div>
               </div>
             ))}
@@ -269,64 +288,69 @@ export default function SubmitPage() {
         </div>
       </section>
 
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 xl:gap-16 items-start">
+      <section className="max-w-6xl mx-auto px-6 py-20 sm:py-28">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 xl:gap-24 items-start">
 
           <div className="lg:col-span-2 lg:sticky lg:top-24">
-            <p className="text-xs font-semibold tracking-widest uppercase text-red-500 mb-3">File a Complaint</p>
-            <h2 className="font-serif text-3xl sm:text-4xl text-stone-900 mb-3 leading-snug">
+            <p className="text-xs font-bold tracking-[0.2em] uppercase text-red-600 mb-4">File a Complaint</p>
+            <h2 className="font-serif text-4xl sm:text-5xl text-stone-900 mb-6 leading-tight">
               Tell us what happened.
             </h2>
-            <p className="text-stone-500 text-sm leading-relaxed mb-8">
+            <p className="text-stone-500 text-base leading-relaxed mb-10">
               Complete the form and we will review your complaint, assign it to the right team, and get back to you as fast as possible.
             </p>
 
-            <div className="space-y-5">
+            <div className="space-y-8">
               {sidebarFeatures.map(f => (
-                <div key={f.title} className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-stone-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <f.icon className="w-4 h-4 text-stone-600" />
+                <div key={f.title} className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <f.icon className="w-5 h-5 text-red-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-stone-800">{f.title}</p>
-                    <p className="text-xs text-stone-500 leading-relaxed mt-0.5">{f.description}</p>
+                    <p className="text-base font-semibold text-stone-900">{f.title}</p>
+                    <p className="text-sm text-stone-500 leading-relaxed mt-1">{f.description}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="mt-8 pt-8 border-t border-stone-200">
-              <p className="text-xs text-stone-400">
-                Already submitted?{' '}
-                <a href="/track" className="text-red-500 font-semibold hover:underline">
-                  Track your complaint
-                </a>
-              </p>
+            <div className="mt-12 pt-10 border-t border-stone-100">
+              <div className="bg-stone-50 rounded-2xl p-6 border border-stone-200">
+                <p className="text-sm text-stone-600 mb-4 font-medium">
+                  Already submitted a complaint?
+                </p>
+                <button 
+                  onClick={() => window.location.href = '/track'}
+                  className="flex items-center gap-2 text-red-600 font-bold text-sm hover:gap-3 transition-all"
+                >
+                  Track your complaint status <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
 
           <div className="lg:col-span-3">
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex items-center gap-2 mb-8">
               {Array.from({ length: TOTAL_STEPS }).map((_, idx) => {
                 const num = idx + 1
                 const active = num === step
                 const done = num < step
                 return (
                   <div key={num} className="flex items-center flex-1">
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-col items-center gap-2">
                       <div className={`
-                        w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all flex-shrink-0
-                        ${done ? 'bg-green-600 text-white' : active ? 'bg-red-600 text-white' : 'bg-stone-200 text-stone-400'}
+                        w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all flex-shrink-0
+                        ${done ? 'bg-green-600 text-white' : active ? 'bg-red-600 text-white shadow-lg shadow-red-200' : 'bg-stone-100 text-stone-400 border border-stone-200'}
                       `}>
                         {done ? '✓' : num}
                       </div>
-                      <span className={`text-xs font-semibold hidden sm:block whitespace-nowrap ${active ? 'text-stone-800' : 'text-stone-400'}`}>
+                      <span className={`text-[10px] font-bold uppercase tracking-wider hidden sm:block whitespace-nowrap ${active ? 'text-stone-900' : 'text-stone-400'}`}>
                         {['Your Info', 'Issue Details', 'Description'][idx]}
                       </span>
                     </div>
                     {idx < TOTAL_STEPS - 1 && (
-                      <div className="flex-1 h-px mx-3 bg-stone-200">
-                        <div className={`h-full bg-green-600 transition-all duration-500 ${done ? 'w-full' : 'w-0'}`} />
+                      <div className="flex-1 h-px mx-4 bg-stone-200 mb-6">
+                        <div className={`h-full bg-green-600 transition-all duration-700 ease-in-out ${done ? 'w-full' : 'w-0'}`} />
                       </div>
                     )}
                   </div>
@@ -334,88 +358,95 @@ export default function SubmitPage() {
               })}
             </div>
 
-            <div className="bg-white border border-stone-200 rounded-2xl shadow-sm p-6 sm:p-8">
+            <div className="bg-white border border-stone-200 rounded-[2rem] shadow-xl shadow-stone-200/50 p-8 sm:p-12">
               {step === 1 && (
-                <div>
-                  <div className="flex items-center gap-3 mb-7">
-                    <div className="w-9 h-9 bg-stone-100 rounded-xl flex items-center justify-center">
-                      <User className="w-4 h-4 text-stone-600" />
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="w-14 h-14 bg-stone-100 rounded-2xl flex items-center justify-center">
+                      <User className="w-6 h-6 text-stone-800" />
                     </div>
                     <div>
-                      <p className="font-semibold text-stone-800">Your Information</p>
-                      <p className="text-xs text-stone-400">So we know who to get back to</p>
+                      <p className="font-serif text-2xl text-stone-900">Your Information</p>
+                      <p className="text-sm text-stone-400">So we know who to get back to</p>
                     </div>
                   </div>
 
-                  <div className="space-y-5">
+                  <div className="space-y-6">
                     <div>
-                      <label className="block text-xs font-semibold text-stone-700 mb-1.5">Full Name</label>
-                      <input
-                        type="text"
-                        placeholder="Jane Smith"
-                        value={form.name}
-                        onChange={e => setForm(prev => ({ ...prev, name: e.target.value }))}
-                        className="w-full bg-stone-50 border border-stone-200 rounded-lg px-4 py-3 text-sm text-stone-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
-                      />
+                      <label className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">Full Name</label>
+                      <div className="relative">
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+                        <input
+                          type="text"
+                          placeholder="Jane Smith"
+                          value={form.name}
+                          onChange={e => setForm(prev => ({ ...prev, name: e.target.value }))}
+                          className="w-full bg-stone-50 border border-stone-200 rounded-xl pl-11 pr-4 py-4 text-sm text-stone-900 outline-none focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/5 transition-all"
+                        />
+                      </div>
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-stone-700 mb-1.5">Email Address</label>
-                      <input
-                        type="email"
-                        placeholder="jane@email.com"
-                        value={form.email}
-                        onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))}
-                        className="w-full bg-stone-50 border border-stone-200 rounded-lg px-4 py-3 text-sm text-stone-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
-                      />
-                      <p className="text-xs text-stone-400 mt-1.5">Your ticket ID and updates will be sent here.</p>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">Email Address</label>
+                      <div className="relative">
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+                        <input
+                          type="email"
+                          placeholder="jane@email.com"
+                          value={form.email}
+                          onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))}
+                          className="w-full bg-stone-50 border border-stone-200 rounded-xl pl-11 pr-4 py-4 text-sm text-stone-900 outline-none focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/5 transition-all"
+                        />
+                      </div>
+                      <p className="text-xs text-stone-400 mt-2 ml-1">Your ticket ID and updates will be sent here.</p>
                     </div>
                   </div>
                 </div>
               )}
 
               {step === 2 && (
-                <div>
-                  <div className="flex items-center gap-3 mb-7">
-                    <div className="w-9 h-9 bg-stone-100 rounded-xl flex items-center justify-center">
-                      <Tag className="w-4 h-4 text-stone-600" />
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="w-14 h-14 bg-stone-100 rounded-2xl flex items-center justify-center">
+                      <Tag className="w-6 h-6 text-stone-800" />
                     </div>
                     <div>
-                      <p className="font-semibold text-stone-800">Issue Details</p>
-                      <p className="text-xs text-stone-400">Help us understand what went wrong</p>
+                      <p className="font-serif text-2xl text-stone-900">Issue Details</p>
+                      <p className="text-sm text-stone-400">Help us understand what went wrong</p>
                     </div>
                   </div>
 
-                  <div className="space-y-6">
+                  <div className="space-y-8">
                     <div>
-                      <label className="block text-xs font-semibold text-stone-700 mb-1.5">Subject</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">Subject</label>
                       <input
                         type="text"
                         placeholder="Brief description of the issue..."
                         value={form.subject}
                         onChange={e => handleSubjectChange(e.target.value)}
-                        className="w-full bg-stone-50 border border-stone-200 rounded-lg px-4 py-3 text-sm text-stone-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                        className="w-full bg-stone-50 border border-stone-200 rounded-xl px-5 py-4 text-sm text-stone-900 outline-none focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/5 transition-all"
                       />
                       {detectedCategory && (
-                        <p className="text-xs text-stone-400 mt-1.5">
-                          Auto-detected: <span className="text-red-500 font-semibold capitalize">{detectedCategory}</span>
+                        <p className="text-xs text-stone-500 mt-3 flex items-center gap-2">
+                          <Zap className="w-3 h-3 text-red-500" />
+                          Auto-detected: <span className="text-red-600 font-bold uppercase tracking-tight">{detectedCategory}</span>
                         </p>
                       )}
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-stone-700 mb-2">Category</label>
-                      <div className="grid grid-cols-2 gap-2">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-3">Category</label>
+                      <div className="grid grid-cols-2 gap-3">
                         {categories.map(c => (
                           <button
                             key={c.value}
                             onClick={() => setForm(prev => ({ ...prev, category: c.value }))}
-                            className={`flex items-center gap-2.5 px-4 py-3 rounded-xl border text-sm font-medium transition-all text-left ${
+                            className={`flex items-center gap-3 px-4 py-4 rounded-xl border text-sm font-semibold transition-all text-left ${
                               form.category === c.value
-                                ? 'border-blue-500 bg-blue-50 text-blue-700 ring-2 ring-blue-100'
+                                ? 'border-red-600 bg-red-50 text-red-700 shadow-sm'
                                 : 'border-stone-200 bg-stone-50 text-stone-600 hover:border-stone-300 hover:bg-white'
                             }`}
                           >
-                            <span className="text-base">{c.icon}</span>
+                            <span className="text-lg">{c.icon}</span>
                             <span className="text-xs">{c.label}</span>
                           </button>
                         ))}
@@ -423,19 +454,19 @@ export default function SubmitPage() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-stone-700 mb-2">Priority</label>
-                      <div className="flex gap-2">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-3">Priority</label>
+                      <div className="flex gap-3">
                         {([
-                          { value: 'low', label: 'Low', color: 'bg-green-50 border-green-200 text-green-700 ring-green-100' },
-                          { value: 'medium', label: 'Medium', color: 'bg-amber-50 border-amber-200 text-amber-700 ring-amber-100' },
-                          { value: 'high', label: 'High', color: 'bg-red-50 border-red-200 text-red-700 ring-red-100' },
+                          { value: 'low', label: 'Low', color: 'bg-green-50 border-green-200 text-green-700' },
+                          { value: 'medium', label: 'Medium', color: 'bg-amber-50 border-amber-200 text-amber-700' },
+                          { value: 'high', label: 'High', color: 'bg-red-50 border-red-200 text-red-700' },
                         ] as { value: ComplaintPriority; label: string; color: string }[]).map(p => (
                           <button
                             key={p.value}
                             onClick={() => setForm(prev => ({ ...prev, priority: p.value }))}
-                            className={`flex-1 py-2.5 rounded-lg border text-xs font-semibold transition-all ${
+                            className={`flex-1 py-3 rounded-xl border text-xs font-bold transition-all ${
                               form.priority === p.value
-                                ? `${p.color} ring-2`
+                                ? `${p.color} border-2 shadow-sm`
                                 : 'border-stone-200 bg-stone-50 text-stone-500 hover:bg-white'
                             }`}
                           >
@@ -449,54 +480,54 @@ export default function SubmitPage() {
               )}
 
               {step === 3 && (
-                <div>
-                  <div className="flex items-center gap-3 mb-7">
-                    <div className="w-9 h-9 bg-stone-100 rounded-xl flex items-center justify-center">
-                      <AlignLeft className="w-4 h-4 text-stone-600" />
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="w-14 h-14 bg-stone-100 rounded-2xl flex items-center justify-center">
+                      <AlignLeft className="w-6 h-6 text-stone-800" />
                     </div>
                     <div>
-                      <p className="font-semibold text-stone-800">Describe Your Complaint</p>
-                      <p className="text-xs text-stone-400">The more detail, the faster we can help</p>
+                      <p className="font-serif text-2xl text-stone-900">Description</p>
+                      <p className="text-sm text-stone-400">The more detail, the faster we can help</p>
                     </div>
                   </div>
 
-                  <div className="bg-stone-50 border border-stone-200 rounded-xl p-4 mb-5">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-xs text-stone-500">
-                      <span>
-                        <span className="font-semibold text-stone-700">{form.name}</span>
-                        {' '}&middot;{' '}
-                        <span className="break-all">{form.email}</span>
-                      </span>
-                      <span className="capitalize font-medium text-stone-600 flex-shrink-0">
+                  <div className="bg-stone-50 border border-stone-200 rounded-2xl p-5 mb-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs font-bold uppercase tracking-wider">
+                      <span className="text-stone-700">{form.name}</span>
+                      <span className="text-red-600">
                         {form.category} &middot; {form.priority} priority
                       </span>
                     </div>
                   </div>
 
                   <textarea
-                    rows={7}
+                    rows={8}
                     placeholder="Please provide as much detail as possible. What happened, when did it happen, and how has it affected you?"
                     value={form.description}
                     onChange={e => setForm(prev => ({ ...prev, description: e.target.value }))}
-                    className="w-full bg-stone-50 border border-stone-200 rounded-lg px-4 py-3 text-sm text-stone-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all resize-y"
+                    className="w-full bg-stone-50 border border-stone-200 rounded-2xl px-5 py-5 text-sm text-stone-900 outline-none focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/5 transition-all resize-none"
                   />
-                  <p className="text-xs text-stone-400 mt-1.5">{form.description.length} characters</p>
+                  <div className="flex justify-end mt-2">
+                    <p className={`text-[10px] font-bold uppercase tracking-widest ${form.description.length < 10 ? 'text-stone-400' : 'text-green-600'}`}>
+                      {form.description.length} Characters
+                    </p>
+                  </div>
                 </div>
               )}
 
               {error && (
-                <div className="mt-5 px-4 py-3 bg-red-50 border border-red-100 rounded-lg text-sm text-red-600">
+                <div className="mt-8 px-5 py-4 bg-red-50 border border-red-100 rounded-xl text-sm text-red-600 font-medium animate-in zoom-in-95 duration-300">
                   {error}
                 </div>
               )}
 
-              <div className="flex items-center justify-between mt-7 pt-6 border-t border-stone-100">
+              <div className="flex items-center justify-between mt-10 pt-8 border-t border-stone-100">
                 {step > 1 ? (
                   <button
                     onClick={handleBack}
-                    className="flex items-center gap-1.5 px-4 py-2.5 border border-stone-200 rounded-lg text-sm font-semibold text-stone-600 hover:bg-stone-50 transition-all"
+                    className="flex items-center gap-2 px-6 py-4 rounded-xl text-sm font-bold text-stone-500 hover:text-stone-900 hover:bg-stone-50 transition-all"
                   >
-                    <ChevronLeft className="w-4 h-4" />
+                    <ChevronLeft className="w-5 h-5" />
                     Back
                   </button>
                 ) : <div />}
@@ -504,19 +535,20 @@ export default function SubmitPage() {
                 {step < TOTAL_STEPS ? (
                   <button
                     onClick={handleNext}
-                    className="flex items-center gap-1.5 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-semibold transition-all"
+                    className="flex items-center gap-2 px-10 py-4 bg-red-600 hover:bg-red-700 text-white rounded-xl text-sm font-bold shadow-lg shadow-red-200 transition-all active:scale-95"
                   >
                     Continue
-                    <ChevronRight className="w-4 h-4" />
+                    <ChevronRight className="w-5 h-5" />
                   </button>
                 ) : (
                   <button
                     onClick={handleSubmit}
                     disabled={loading}
-                    className="flex items-center gap-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-semibold transition-all disabled:opacity-60"
+                    className="flex items-center gap-3 px-10 py-4 bg-red-600 hover:bg-red-700 text-white rounded-xl text-sm font-bold shadow-lg shadow-red-200 transition-all disabled:opacity-60 active:scale-95"
                   >
                     {loading && <Spinner size="sm" />}
-                    {loading ? 'Submitting...' : 'Submit Complaint →'}
+                    {loading ? 'Submitting...' : 'Submit Complaint'}
+                    {!loading && <ChevronRight className="w-5 h-5" />}
                   </button>
                 )}
               </div>

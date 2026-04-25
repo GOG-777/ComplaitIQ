@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { logout, isAuthenticated } from '../services/auth.service'
-import { Menu, X, ShieldCheck } from 'lucide-react'
+import { Menu, X, ShieldCheck, ChevronRight } from 'lucide-react'
 
 export default function Header() {
     const navigate = useNavigate()
@@ -40,7 +40,7 @@ export default function Header() {
 
     return (
         <>
-            <header className="bg-stone-900 text-white h-16 px-6 flex items-center justify-between sticky top-0 z-50">
+            <header className="bg-stone-900 text-white h-20 px-6 flex items-center justify-between sticky top-0 z-50 border-b border-white/5 backdrop-blur-md bg-stone-900/90">
                 <button
                     onClick={() => navigate('/')}
                     className="flex items-center gap-2 h-12"
@@ -50,31 +50,42 @@ export default function Header() {
                         alt=""
                         className="h-full w-auto py-1"
                     />
-                    <span className="font-serif text-xl tracking-tight">
+                    <span className="font-serif text-2xl tracking-tighter">
                         Compli<span className="text-red-500">IQ</span>
                     </span>
                 </button>
 
-                <nav className="hidden md:flex items-center gap-1">
-                    <button onClick={() => navTo('/')} className={linkClass('/')}>Submit</button>
-                    <button onClick={() => navTo('/track')} className={linkClass('/track')}>Track</button>
-                    {authed && isAdmin && (
-                        <>
-                            <button onClick={() => navTo('/admin')} className={linkClass('/admin')}>Dashboard</button>
-                            <button onClick={() => navTo('/admin/analytics')} className={linkClass('/admin/analytics')}>Analytics</button>
-                            <button
-                                onClick={() => navTo('/admin/settings')}
-                                className={linkClass('/admin/settings')}
-                            >
-                                Settings
-                            </button>
-                            <button
-                                onClick={handleLogout}
-                                className="px-4 py-2 rounded-lg text-sm font-medium text-white/55 hover:text-white hover:bg-white/8 transition-all"
-                            >
-                                Sign out
-                            </button>
-                        </>
+                <nav className="hidden md:flex items-center gap-6">
+                    <div className="flex items-center gap-1">
+                        <button onClick={() => navTo('/')} className={linkClass('/')}>Submit</button>
+                        {authed && isAdmin && (
+                            <>
+                                <button onClick={() => navTo('/admin')} className={linkClass('/admin')}>Dashboard</button>
+                                <button onClick={() => navTo('/admin/analytics')} className={linkClass('/admin/analytics')}>Analytics</button>
+                                <button
+                                    onClick={() => navTo('/admin/settings')}
+                                    className={linkClass('/admin/settings')}
+                                >
+                                    Settings
+                                </button>
+                                <button
+                                    onClick={handleLogout}
+                                    className="px-4 py-2 rounded-lg text-sm font-medium text-white/55 hover:text-white transition-all"
+                                >
+                                    Sign out
+                                </button>
+                            </>
+                        )}
+                    </div>
+
+                    {!isAdmin && (
+                        <button
+                            onClick={() => navTo('/track')}
+                            className="px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-sm font-bold transition-all flex items-center gap-2 group"
+                        >
+                            Track Your Complaint
+                            <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                        </button>
                     )}
                 </nav>
 
@@ -161,11 +172,14 @@ export default function Header() {
                             </button>
                         ) : (
                             <button
-                                onClick={() => navTo('/admin/login')}
-                                className="w-full flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium text-stone-500 hover:text-stone-300 hover:bg-white/5 transition-all"
+                                onClick={() => navTo('/track')}
+                                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold text-white bg-white/5 hover:bg-white/10 transition-all border border-white/5"
                             >
-                                <ShieldCheck className="w-4 h-4" />
-                                Admin Access
+                                <span className="flex items-center gap-2">
+                                    <ShieldCheck className="w-4 h-4 text-red-500" />
+                                    Track Your Complaint
+                                </span>
+                                <ChevronRight className="w-4 h-4" />
                             </button>
                         )}
                     </div>
