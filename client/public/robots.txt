@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://compli-iq.vercel.app/sitemap.xml
