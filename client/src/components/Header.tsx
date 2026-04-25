@@ -40,7 +40,7 @@ export default function Header() {
 
     return (
         <>
-            <header className="bg-stone-900 text-white h-20 px-6 flex items-center justify-between sticky top-0 z-50 border-b border-white/5 backdrop-blur-md bg-stone-900/90">
+            <header className="bg-stone-950 text-white h-20 px-6 flex items-center justify-between sticky top-0 z-50 border-b border-white/5 backdrop-blur-md bg-stone-950/90">
                 <button
                     onClick={() => navigate('/')}
                     className="flex items-center gap-2 h-12"
@@ -100,13 +100,13 @@ export default function Header() {
 
             {menuOpen && (
                 <div
-                    className="fixed inset-0 z-40 bg-stone-900/60 backdrop-blur-sm md:hidden"
+                    className="fixed inset-0 z-40 bg-stone-950/60 backdrop-blur-sm md:hidden"
                     onClick={() => setMenuOpen(false)}
                 />
             )}
 
             <div className={`
-        fixed top-16 right-0 bottom-0 z-40 w-72 bg-stone-900 border-l border-stone-800
+        fixed top-16 right-0 bottom-0 z-40 w-72 bg-stone-950 border-l border-white/5
         transform transition-transform duration-300 ease-in-out md:hidden
         ${menuOpen ? 'translate-x-0' : 'translate-x-full'}
       `}>
