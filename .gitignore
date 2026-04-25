@@ -5,3 +5,6 @@ dist
 test.md 
 *.docx
 *.pdf
+**/test-api.js
+**/scratch_fetch.js
+**/test-db.js

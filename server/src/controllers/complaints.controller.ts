@@ -184,39 +184,37 @@ export const submitFollowUp = async (req: Request, res: Response): Promise<void>
 }
 
 export const getAnalytics = async (req: Request, res: Response): Promise<void> => {
-    const [byCategory, byStatus, byPriority, overTime, totals] = await Promise.all([
-        pool.query(`
+    const byCategory = await pool.query(`
       SELECT category, COUNT(*)::int AS count
       FROM complaints
       GROUP BY category
       ORDER BY count DESC
-    `),
-        pool.query(`
+    `)
+    const byStatus = await pool.query(`
       SELECT status, COUNT(*)::int AS count
       FROM complaints
       GROUP BY status
-    `),
-        pool.query(`
+    `)
+    const byPriority = await pool.query(`
       SELECT priority, COUNT(*)::int AS count
       FROM complaints
       GROUP BY priority
-    `),
-        pool.query(`
+    `)
+    const overTime = await pool.query(`
       SELECT DATE(created_at) AS date, COUNT(*)::int AS count
       FROM complaints
       WHERE created_at >= NOW() - INTERVAL '30 days'
       GROUP BY DATE(created_at)
       ORDER BY date ASC
-    `),
-        pool.query(`
+    `)
+    const totals = await pool.query(`
       SELECT
         COUNT(*)::int AS total,
         COUNT(*) FILTER (WHERE status = 'resolved')::int AS resolved,
         COUNT(*) FILTER (WHERE status = 'open')::int AS open,
         COUNT(*) FILTER (WHERE status = 'pending')::int AS pending
       FROM complaints
-    `),
-    ])
+    `)
 
     res.json({
         byCategory: byCategory.rows,

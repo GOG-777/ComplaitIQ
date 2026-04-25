@@ -86,7 +86,7 @@ export default function AnalyticsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 mb-5 sm:mb-6">
-        <div className="bg-white border border-stone-200 rounded-2xl shadow-sm p-5 sm:p-6">
+        <div className="bg-white border border-stone-200 rounded-2xl shadow-sm p-5 sm:p-6 min-w-0">
           <p className="text-xs font-semibold uppercase tracking-widest text-stone-400 mb-5">By Category</p>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={data?.byCategory.map(d => ({ ...d, category: capitalize(d.category) }))}>
@@ -102,7 +102,7 @@ export default function AnalyticsPage() {
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-white border border-stone-200 rounded-2xl shadow-sm p-5 sm:p-6">
+        <div className="bg-white border border-stone-200 rounded-2xl shadow-sm p-5 sm:p-6 min-w-0">
           <p className="text-xs font-semibold uppercase tracking-widest text-stone-400 mb-5">By Status</p>
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
@@ -112,8 +112,8 @@ export default function AnalyticsPage() {
                 nameKey="name"
                 cx="50%"
                 cy="50%"
-                outerRadius={80}
-                innerRadius={40}
+                outerRadius={50}
+                innerRadius={30}
                 paddingAngle={3}
                 label={({ name, percent }: { name: string, percent: number }) => `${name} ${Math.round(percent * 100)}%`}
                 labelLine={false}
@@ -129,7 +129,7 @@ export default function AnalyticsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
-        <div className="md:col-span-2 bg-white border border-stone-200 rounded-2xl shadow-sm p-5 sm:p-6">
+        <div className="md:col-span-2 bg-white border border-stone-200 rounded-2xl shadow-sm p-5 sm:p-6 min-w-0">
           <p className="text-xs font-semibold uppercase tracking-widest text-stone-400 mb-5">Complaints Over Time (Last 30 Days)</p>
           <ResponsiveContainer width="100%" height={200}>
             <LineChart data={data?.overTime.map(d => ({
@@ -154,7 +154,7 @@ export default function AnalyticsPage() {
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-white border border-stone-200 rounded-2xl shadow-sm p-5 sm:p-6">
+        <div className="bg-white border border-stone-200 rounded-2xl shadow-sm p-5 sm:p-6 min-w-0">
           <p className="text-xs font-semibold uppercase tracking-widest text-stone-400 mb-5">By Priority</p>
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
@@ -164,7 +164,7 @@ export default function AnalyticsPage() {
                 nameKey="name"
                 cx="50%"
                 cy="50%"
-                outerRadius={80}
+                outerRadius={50}
                 paddingAngle={3}
                 label={({ name, percent }: { name: string, percent: number }) => `${name} ${Math.round(percent * 100)}%`}
                 labelLine={false}

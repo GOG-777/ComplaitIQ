@@ -8,6 +8,7 @@ const pool = new Pool(
     ? {
         connectionString: process.env.DATABASE_URL,
         ssl: { rejectUnauthorized: false },
+        idleTimeoutMillis: 30000,
       }
     : {
         host: process.env.DB_HOST,
@@ -19,8 +20,7 @@ const pool = new Pool(
 )
 
 pool.on('error', (err) => {
-  console.error('Database connection error:', err)
-  process.exit(1)
+  console.error('Unexpected database pool error:', err.message)
 })
 
 export default pool
