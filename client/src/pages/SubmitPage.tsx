@@ -425,10 +425,10 @@ export default function SubmitPage() {
                         onChange={e => handleSubjectChange(e.target.value)}
                         className="w-full bg-stone-50 border border-stone-200 rounded-xl px-5 py-4 text-sm text-stone-900 outline-none focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/5 transition-all"
                       />
-                      {detectedCategory && (
+                      {detectedCategory && form.category === detectedCategory && (
                         <p className="text-xs text-stone-500 mt-3 flex items-center gap-2">
                           <Zap className="w-3 h-3 text-red-500" />
-                          Auto-detected: <span className="text-red-600 font-bold uppercase tracking-tight">{detectedCategory}</span>
+                          Auto-detected: <span className="text-red-600 font-bold uppercase tracking-tight">{categories.find(c => c.value === detectedCategory)?.label || detectedCategory}</span>
                         </p>
                       )}
                     </div>
@@ -495,7 +495,7 @@ export default function SubmitPage() {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs font-bold uppercase tracking-wider">
                       <span className="text-stone-700">{form.name}</span>
                       <span className="text-red-600">
-                        {form.category} &middot; {form.priority} priority
+                        {categories.find(c => c.value === form.category)?.label || form.category} &middot; {form.priority} priority
                       </span>
                     </div>
                   </div>
