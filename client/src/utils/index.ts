@@ -11,7 +11,7 @@ export const detectCategory = (subject: string): string => {
   if (/refund|charge|billing|invoice|payment|overcharged/.test(s)) return 'billing'
   if (/bug|error|crash|not working|glitch|technical|app|website|login/.test(s)) return 'technical'
   if (/rude|staff|service|agent|support|representative|attitude/.test(s)) return 'service'
-  if (/delivery|shipment|package|tracking|arrived|missing item/.test(s)) return 'delivery'
+  if (/delivery|shipment|package|tracking|arrived|missing item|logistics|dispatched|freight|parcel/.test(s)) return 'delivery'
   return 'other'
 }
 
