@@ -17,7 +17,7 @@ export default function Footer() {
                                 className="h-full w-auto"
                             />
                             <p className="font-serif text-white text-xl">
-                                Compli<span className="text-red-500">IQ</span>
+                                Complait<span className="text-red-500">IQ</span>
                             </p>
                         </div>
                         <p className="text-sm text-stone-500 max-w-xs leading-relaxed">
