@@ -30,17 +30,15 @@ export const submitComplaint = async (req: Request, res: Response): Promise<void
         [complaint.rows[0].id, autoContent]
     )
 
-    try {
-        await sendConfirmationEmail(
-            email,
-            name,
-            ticket_id,
-            subject,
-            autoContent
-        )
-    } catch {
-        // Email failure should not block the complaint submission
-    }
+    sendConfirmationEmail(
+        email,
+        name,
+        ticket_id,
+        subject,
+        autoContent
+    ).catch(err => {
+        console.error('Failed to send confirmation email:', err)
+    })
 
     res.status(201).json({
         ticket_id,

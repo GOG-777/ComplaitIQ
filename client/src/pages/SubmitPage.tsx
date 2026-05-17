@@ -98,6 +98,7 @@ export default function SubmitPage() {
     description: '',
   })
   const [detectedCategory, setDetectedCategory] = useState('')
+  const [userSelectedCategory, setUserSelectedCategory] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState<{ ticket_id: string; auto_response: string } | null>(null)
@@ -106,7 +107,7 @@ export default function SubmitPage() {
     setForm(prev => ({ ...prev, subject: value }))
     const detected = detectCategory(value)
     setDetectedCategory(detected)
-    if (!form.category) {
+    if (!userSelectedCategory) {
       setForm(prev => ({ ...prev, category: detected as ComplaintCategory }))
     }
   }
@@ -162,6 +163,7 @@ export default function SubmitPage() {
   const handleReset = () => {
     setForm({ name: '', email: '', subject: '', category: '', priority: 'low', description: '' })
     setDetectedCategory('')
+    setUserSelectedCategory(false)
     setStep(1)
     setSuccess(null)
     setError('')
@@ -439,7 +441,10 @@ export default function SubmitPage() {
                         {categories.map(c => (
                           <button
                             key={c.value}
-                            onClick={() => setForm(prev => ({ ...prev, category: c.value }))}
+                            onClick={() => {
+                              setForm(prev => ({ ...prev, category: c.value }))
+                              setUserSelectedCategory(true)
+                            }}
                             className={`flex items-center gap-3 px-4 py-4 rounded-xl border text-sm font-semibold transition-all text-left ${
                               form.category === c.value
                                 ? 'border-red-600 bg-red-50 text-red-700 shadow-sm'
