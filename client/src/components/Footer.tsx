@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { ShieldCheck } from 'lucide-react'
+import { ShieldCheck, Github } from 'lucide-react'
 
 export default function Footer() {
     const navigate = useNavigate()
@@ -59,9 +59,20 @@ export default function Footer() {
                     </div>
                 </div>
 
-                <div className="border-t border-stone-800 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="border-t border-stone-800 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p className="text-xs text-stone-600">&copy; {year} ComplaitIQ. All rights reserved.</p>
-                    <p className="text-xs text-stone-600">Built with React, Express & PostgreSQL</p>
+                    <div className="flex items-center gap-6">
+                        <a 
+                            href="https://github.com/GOG-777/ComplaitIQ" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-xs text-stone-500 hover:text-white transition-colors"
+                        >
+                            <Github className="w-4 h-4" />
+                            GitHub
+                        </a>
+                        <p className="text-xs text-stone-600">Built with React, Express & PostgreSQL</p>
+                    </div>
                 </div>
             </div>
         </footer>

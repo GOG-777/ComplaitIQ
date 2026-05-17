@@ -31,21 +31,15 @@ export const sendAdminResponse = async (req: AuthRequest, res: Response): Promis
     await pool.query('UPDATE complaints SET status = $1 WHERE id = $2', [status, id])
   }
 
-  try {
-    await sendResponseEmail(
-      complaint.email,
-      complaint.name,
-      complaint.ticket_id,
-      complaint.subject,
-      content.trim()
-    )
-  } catch {
-    res.status(207).json({
-      message: 'Response saved but email delivery failed. Check your mail configuration.',
-      status: 'partial',
-    })
-    return
-  }
+  sendResponseEmail(
+    complaint.email,
+    complaint.name,
+    complaint.ticket_id,
+    complaint.subject,
+    content.trim()
+  ).catch(err => {
+    console.error('Failed to send admin response email:', err)
+  })
 
   const updated = await pool.query('SELECT * FROM complaints WHERE id = $1', [id])
   res.json(updated.rows[0])
